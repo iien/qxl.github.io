@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用Docker部署项目 | 青学知识库</title>
+    <meta name="description" content="Sping Cloud知识体系，从简单入手，讲解重点知识方便新手的顺序入门-使用Docker部署项目">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.e9ed429c.css" as="style"><link rel="preload" href="/assets/js/app.75d9b984.js" as="script"><link rel="preload" href="/assets/js/2.118380fc.js" as="script"><link rel="preload" href="/assets/js/20.54811258.js" as="script"><link rel="preload" href="/assets/js/3.411ea822.js" as="script"><link rel="prefetch" href="/assets/js/10.903586d7.js"><link rel="prefetch" href="/assets/js/11.10b2d3ce.js"><link rel="prefetch" href="/assets/js/12.6e5bbcc7.js"><link rel="prefetch" href="/assets/js/13.982ce1d0.js"><link rel="prefetch" href="/assets/js/14.2b21f1cb.js"><link rel="prefetch" href="/assets/js/15.dbd5cef3.js"><link rel="prefetch" href="/assets/js/16.1e05176e.js"><link rel="prefetch" href="/assets/js/17.34450871.js"><link rel="prefetch" href="/assets/js/18.21301368.js"><link rel="prefetch" href="/assets/js/19.a671d3e7.js"><link rel="prefetch" href="/assets/js/21.a65c2c46.js"><link rel="prefetch" href="/assets/js/22.f32633f4.js"><link rel="prefetch" href="/assets/js/23.6195881a.js"><link rel="prefetch" href="/assets/js/4.d9ccf79e.js"><link rel="prefetch" href="/assets/js/5.5e2eacdf.js"><link rel="prefetch" href="/assets/js/6.6c4229a0.js"><link rel="prefetch" href="/assets/js/7.4408bccc.js"><link rel="prefetch" href="/assets/js/8.2119c672.js"><link rel="prefetch" href="/assets/js/9.72fa30ee.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.e9ed429c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">青学知识库</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>基础开发</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/press/2019-6-29-spingcloud-basic-001/" class="sidebar-link">SpringCloud 开篇</a></li><li><a href="/press/2019-6-29-spingcloud-basic-002/" class="sidebar-link">微服务注册与发现</a></li><li><a href="/press/2019-6-29-spingcloud-basic-003/" class="sidebar-link">Ribbon客户端负载均衡</a></li><li><a href="/press/2019-6-29-spingcloud-basic-004/" class="sidebar-link">Feign声明式REST调用</a></li><li><a href="/press/2019-6-29-spingcloud-basic-005/" class="sidebar-link">Hystrix容错处理</a></li><li><a href="/press/2019-6-29-spingcloud-basic-006/" class="sidebar-link">Zuul构建微服务网关</a></li><li><a href="/press/2019-6-29-spingcloud-basic-007/" class="sidebar-link">Config配置管理</a></li><li><a href="/press/2019-6-29-spingcloud-basic-008/" class="sidebar-link">Sleuth链路追踪</a></li><li><a href="/press/2019-6-29-spingcloud-basic-009/" class="active sidebar-link">使用Docker部署项目</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#概念" class="sidebar-link">概念</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#使用插件" class="sidebar-link">使用插件</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#dockerfile" class="sidebar-link">Dockerfile</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#compose" class="sidebar-link">Compose</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#server" class="sidebar-link">Server</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#client" class="sidebar-link">Client</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#pom-xml插件配置" class="sidebar-link">pom.xml插件配置</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#docker-compose-yml" class="sidebar-link">docker-compose.yml</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-009/#docker-compose编译并启动镜像" class="sidebar-link">docker-compose编译并启动镜像</a></li></ul></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="概念"><a href="#概念" aria-hidden="true" class="header-anchor">#</a> 概念</h2> <p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从Apache2.0协议开源。
+Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。
+容器是完全使用沙箱机制，相互之间不会有任何接口,更重要的是容器性能开销极低。</p> <p>docker入门可参考：https://www.kancloud.cn/fymod/docker/783425</p> <p>本篇环境为macOS系统上安装docker，其他安装可点击<a href="http://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="noopener noreferrer">这里<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>查看。</p> <h2 id="使用插件"><a href="#使用插件" aria-hidden="true" class="header-anchor">#</a> 使用插件</h2> <p>插件的源码可点击<a href="https://github.com/spotify/docker-maven-plugin" target="_blank" rel="noopener noreferrer">这里<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>查看。</p> <p>新建一个Eureka Server（springcloud-9-docker-server），然后在pom.xml中添加配置。</p> <ul><li>pom.xml添加依赖</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><ul><li>启动类添加注解 @EnableEurekaServer</li> <li>application.yml中defaultZone里面不能使用localhost，不过可以使用hosts文件中配置的名称，本例使用ip地址。</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9100
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://192.168.1.11:9100/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><ul><li>pom.xml中插件配置</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+			
+			&lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.4.13&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;fymod/docker-eureka-server:0.0.1&lt;/imageName&gt;
+                    &lt;baseImage&gt;java&lt;/baseImage&gt;
+                    &lt;entryPoint&gt;[&quot;java&quot;, &quot;-jar&quot;, &quot;/${project.build.finalName}.jar&quot;]&lt;/entryPoint&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br></div></div><p>以上配置完成后，运行命令</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>mvn clean package docker:build
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>输出内容较多，最后部分会有类似如下内容</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>Step 1/3 : FROM java
+
+ ---&gt; d23bdf5b1b1b
+Step 2/3 : ADD /springcloud-9-docker-server-0.0.1-SNAPSHOT.jar //
+
+ ---&gt; 193036b62de3
+Step 3/3 : ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/springcloud-9-docker-server-0.0.1-SNAPSHOT.jar&quot;]
+
+ ---&gt; Running in 8ce5afabb85c
+Removing intermediate container 8ce5afabb85c
+ ---&gt; 84925726e998
+ProgressMessage{id=null, status=null, stream=null, error=null, progress=null, progressDetail=null}
+Successfully built 84925726e998
+Successfully tagged fymod/docker-eureka-server:0.0.1
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>执行下面命令查看是否已经存在刚刚构建的镜像了</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>docker images
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>然后启动这个镜像</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>docker run -p 9100:9100 fymod/docker-eureka-server:0.0.1
+# 如果要在后台运行则运行
+# docker run -d -p 9100:9100 fymod/docker-eureka-server:0.0.1
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>最后浏览器查看http://localhost:9100/</p> <h2 id="dockerfile"><a href="#dockerfile" aria-hidden="true" class="header-anchor">#</a> Dockerfile</h2> <p>上节演示了如何直接使用插件来部署项目到docker中，本节采用更有可读性的Dockerfile。新建一个项目作为Eureka Client（springcloud-9-docker-client），服务会注册到上一节中的Server。</p> <ul><li>pom.xml添加依赖</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><ul><li>启动类添加注解@EnableDiscoveryClient</li> <li>application.yml中的defaultZone要配置server地址，不能用localhost</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9101
+spring:
+  application:
+    name: docker-eureka-client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.1.11:9100/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><ul><li>pom.xml中添加插件配置</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+			
+			&lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.4.13&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;fymod/docker-eureka-client:0.0.1&lt;/imageName&gt;
+                    &lt;dockerDirectory&gt;${project.basedir}/src/main/docker&lt;/dockerDirectory&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br></div></div><p>其中，dockerDirectory是指定Dockerfile的位置</p> <ul><li>新建Dockerfile文件，位置在src/main/docker</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>FROM java:8
+VOLUME /tmp
+ADD springcloud-9-docker-client-0.0.1-SNAPSHOT.jar app.jar
+RUN bash -c 'touch /app.jar'
+EXPOSE 9101
+ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>和直接使用插件情况一样，依次执行下面命令</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>mvn clean package docker:build
+docker run -p 9101:9101 fymod/docker-eureka-client:0.0.1
+# 后台执行的话可添加参数-d
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>然后查看server地址http://localhost:9100/ 是否已成功注册上。</p> <h2 id="compose"><a href="#compose" aria-hidden="true" class="header-anchor">#</a> Compose</h2> <p>本节介绍如何使用docker-compose.yml来实现微服务的部署，可以避免每个微服务都单独部署的麻烦。</p> <p>为了防止ip改变印象运行，本节将电脑hosts文件添加</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>127.0.0.1 discovery
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>首先新建一组简单的Eureka项目，一个server，两个client。以下为概要步骤：</p> <h2 id="server"><a href="#server" aria-hidden="true" class="header-anchor">#</a> Server</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>启动类添加注解@EnableEurekaServer</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9110
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://discovery:9110/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><h2 id="client"><a href="#client" aria-hidden="true" class="header-anchor">#</a> Client</h2> <p>两个client除了端口和注册服务名称外均相同</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>启动类添加注解@EnableDiscoveryClient</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9111
+spring:
+  application:
+    name: compose-eureka-client1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery:9110/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><h2 id="pom-xml插件配置"><a href="#pom-xml插件配置" aria-hidden="true" class="header-anchor">#</a> pom.xml插件配置</h2> <p>三个微服务均需添加</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>	&lt;build&gt;
+		&lt;plugins&gt;
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+			&lt;/plugin&gt;
+			
+			&lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.4.13&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;fymod/${project.artifactId}:${project.version}&lt;/imageName&gt;
+                    &lt;forceTags&gt;true&lt;/forceTags&gt;
+                    &lt;baseImage&gt;java&lt;/baseImage&gt;
+                    &lt;entryPoint&gt;[&quot;java&quot;, &quot;-jar&quot;, &quot;/${project.build.finalName}.jar&quot;]&lt;/entryPoint&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            
+		&lt;/plugins&gt;
+	&lt;/build&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br></div></div><p>完成后在每个项目下分别执行构建Docker镜像语句</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>mvn clean package docker:build
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h2 id="docker-compose-yml"><a href="#docker-compose-yml" aria-hidden="true" class="header-anchor">#</a> docker-compose.yml</h2> <p>任意位置新建一个docker-compose.yml文件，内容如下</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>version: &quot;3&quot;
+services: 
+  springcloud-9-compose-server: 
+    image: fymod/springcloud-9-compose-server:0.0.1-SNAPSHOT
+    ports: 
+      - 9110:9110
+  springcloud-9-compose-client1: 
+    image: fymod/springcloud-9-compose-client1:0.0.1-SNAPSHOT
+    links:
+      - springcloud-9-compose-server:discovery
+  springcloud-9-compose-client2: 
+    image: fymod/springcloud-9-compose-client2:0.0.1-SNAPSHOT
+    links:
+      - springcloud-9-compose-server:discovery
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>在文件所在目录执行命令</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>docker-compose up
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>查看server的网页控制台，两个client均已注册进去并启动了。</p> <h2 id="docker-compose编译并启动镜像"><a href="#docker-compose编译并启动镜像" aria-hidden="true" class="header-anchor">#</a> docker-compose编译并启动镜像</h2> <p>本节仅做记录，暂未提供代码。</p> <p>前面介绍的镜像生成是通过mvn package docker:build，其实也可以通过docker-compose生成。</p> <p>移动Dockerfile位置到项目的根目录下，修改ADD行对应的相对路径位置
+springcloud-eureka-server的Dockerfile</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>FROM frolvlad/alpine-oraclejdk8:slim
+VOLUME /tmp
+ADD ./target/springcloud-eureka-server-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]
+EXPOSE 8761
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>springcloud-eureka-client的Dockerfile</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>FROM frolvlad/alpine-oraclejdk8:slim
+VOLUME /tmp
+ADD ./target/springcloud-eureka-client-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>新建docker-build.yml，放到两个项目根目录对应的文件夹下</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>version: '3'
+services:
+  springcloud-eureka-server:
+    build: springcloud-eureka-server
+    ports:
+      - 8761:8761
+
+  service-1:
+    build: springcloud-eureka-client
+    ports:
+      - 8762:8762
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>构建镜像并启动</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>docker-compose -f docker-compose.yml -f docker-build.yml up 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/press/2019-6-29-spingcloud-basic-008/" class="prev">
+          Sleuth链路追踪
+        </a></span> <!----></p></div> </main></div><div class="global-ui"><!----><!----><div></div></div></div>
+    <script src="/assets/js/app.75d9b984.js" defer></script><script src="/assets/js/2.118380fc.js" defer></script><script src="/assets/js/20.54811258.js" defer></script><script src="/assets/js/3.411ea822.js" defer></script>
+  </body>
+</html>

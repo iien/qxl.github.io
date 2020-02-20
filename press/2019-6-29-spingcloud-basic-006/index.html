@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Zuul构建微服务网关 | 青学知识库</title>
+    <meta name="description" content="Sping Cloud知识体系，从简单入手，讲解重点知识方便新手的顺序入门-Zuul构建微服务网关">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.e9ed429c.css" as="style"><link rel="preload" href="/assets/js/app.75d9b984.js" as="script"><link rel="preload" href="/assets/js/2.118380fc.js" as="script"><link rel="preload" href="/assets/js/17.34450871.js" as="script"><link rel="preload" href="/assets/js/3.411ea822.js" as="script"><link rel="prefetch" href="/assets/js/10.903586d7.js"><link rel="prefetch" href="/assets/js/11.10b2d3ce.js"><link rel="prefetch" href="/assets/js/12.6e5bbcc7.js"><link rel="prefetch" href="/assets/js/13.982ce1d0.js"><link rel="prefetch" href="/assets/js/14.2b21f1cb.js"><link rel="prefetch" href="/assets/js/15.dbd5cef3.js"><link rel="prefetch" href="/assets/js/16.1e05176e.js"><link rel="prefetch" href="/assets/js/18.21301368.js"><link rel="prefetch" href="/assets/js/19.a671d3e7.js"><link rel="prefetch" href="/assets/js/20.54811258.js"><link rel="prefetch" href="/assets/js/21.a65c2c46.js"><link rel="prefetch" href="/assets/js/22.f32633f4.js"><link rel="prefetch" href="/assets/js/23.6195881a.js"><link rel="prefetch" href="/assets/js/4.d9ccf79e.js"><link rel="prefetch" href="/assets/js/5.5e2eacdf.js"><link rel="prefetch" href="/assets/js/6.6c4229a0.js"><link rel="prefetch" href="/assets/js/7.4408bccc.js"><link rel="prefetch" href="/assets/js/8.2119c672.js"><link rel="prefetch" href="/assets/js/9.72fa30ee.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.e9ed429c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">青学知识库</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>基础开发</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/press/2019-6-29-spingcloud-basic-001/" class="sidebar-link">SpringCloud 开篇</a></li><li><a href="/press/2019-6-29-spingcloud-basic-002/" class="sidebar-link">微服务注册与发现</a></li><li><a href="/press/2019-6-29-spingcloud-basic-003/" class="sidebar-link">Ribbon客户端负载均衡</a></li><li><a href="/press/2019-6-29-spingcloud-basic-004/" class="sidebar-link">Feign声明式REST调用</a></li><li><a href="/press/2019-6-29-spingcloud-basic-005/" class="sidebar-link">Hystrix容错处理</a></li><li><a href="/press/2019-6-29-spingcloud-basic-006/" class="active sidebar-link">Zuul构建微服务网关</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#概念" class="sidebar-link">概念</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#eureka-server" class="sidebar-link">Eureka Server</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#client" class="sidebar-link">Client</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#web" class="sidebar-link">Web</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#过滤器" class="sidebar-link">过滤器</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-006/#文件上传" class="sidebar-link">文件上传</a></li></ul></li><li><a href="/press/2019-6-29-spingcloud-basic-007/" class="sidebar-link">Config配置管理</a></li><li><a href="/press/2019-6-29-spingcloud-basic-008/" class="sidebar-link">Sleuth链路追踪</a></li><li><a href="/press/2019-6-29-spingcloud-basic-009/" class="sidebar-link">使用Docker部署项目</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="概念"><a href="#概念" aria-hidden="true" class="header-anchor">#</a> 概念</h2> <p>Zuul的主要功能是路由转发和过滤器。路由功能是微服务的一部分，比如/api/user转发到到用户服务，/api/address转发到到地址服务。zuul默认和Ribbon结合实现了负载均衡的功能。同时本篇还介绍zuul和文件上传微服务功能的结合。</p> <p>本篇涉及项目的结构为一个Eureka Server用于其他微服务注册，client1和client2是两个不同的微服务提供者，web是zuul可配置转发到不同的client上。同时client1还会在最后模拟文件上传功能。</p> <h2 id="eureka-server"><a href="#eureka-server" aria-hidden="true" class="header-anchor">#</a> Eureka Server</h2> <p>新建一个普通的Eureka Server，分别配置application.yml、pom.xml和添加注解@EnableEurekaServer</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+server:
+  port: 9070
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9070/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>以上步骤完成后，直接启动即可，然后浏览器地址栏输入http://localhost:9070/eureka 查看界面。</p> <h2 id="client"><a href="#client" aria-hidden="true" class="header-anchor">#</a> Client</h2> <p>新建两个Eureka Client，分别配置application.yml、pom.xml和添加注解@EnableDiscoveryClient，然后提供对外调用接口的Java类。除了不同的返回值用于区分，端口号设置成不一致外，其他的完全一样。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9071
+spring:
+  application:
+    name: zuul-client1
+eureka: 
+  client:
+    service-url:
+      defaultZone: http://localhost:9070/eureka/
+  instance:
+    prefer-ip-address: true
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+
+	@GetMapping(&quot;/{id}&quot;)
+	public String getMessage(@PathVariable Long id) {
+		return &quot;the request1 id is &quot; + id;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><h2 id="web"><a href="#web" aria-hidden="true" class="header-anchor">#</a> Web</h2> <p>接下来新建一个整合了Zuul的项目，pom文件依赖为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>application.yml的配置中，可通过zuul.routes.名称.path和zuul.routes.名称.serviceId指定访问微服务对应的url路径：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9070/eureka/
+server:
+  port: 9073
+spring:
+  application:
+    name: zuul-web
+zuul: 
+  routes:
+    api-1:
+      path: /api-client1/**
+      serviceId: zuul-client1
+    api-2:
+      path: /api-client2/**
+      serviceId: zuul-client2
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><p>通过上面的配置，可实现的效果为访问api-client1会调用zuul-client1中的对应方法。</p> <p>项目启动类添加注解@EnableDiscoveryClient 和 @EnableZuulProxy。</p> <p>分别启动server、client1、client2、web，访问http://localhost:9073/api-client1/1234 和 http://localhost:9073/api-client2/2345 可实现对两个不同微服务的访问测试。</p> <h2 id="过滤器"><a href="#过滤器" aria-hidden="true" class="header-anchor">#</a> 过滤器</h2> <p>本节实现一个最简单的过滤器，判断请求中是否有username字段参数，如果有的话判断如果是fymod就返回特定值。</p> <p>新建一个Controller，其中filterType方法指定的是何时调用，filterOrder是有多个过滤器的时候如何排序，shouldFilter可指定何时过滤，run方法就是具体逻辑了。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Component;
+
+import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
+
+@Component
+public class MyFilter extends ZuulFilter {
+
+	@Override
+	public String filterType() {
+//		pre：路由之前
+//		routing：路由之时
+//		post： 路由之后
+//		error：发送错误调用
+		return &quot;pre&quot;;
+	}
+
+	/**
+	 * 过滤的顺序
+	 */
+	@Override
+	public int filterOrder() {
+		return 0;
+	}
+
+	/**
+	 * 这里可以写逻辑判断，是否要过滤，true为永远过滤。
+	 */
+	@Override
+	public boolean shouldFilter() {
+		return true;
+	}
+
+	/**
+	 * 过滤器的具体逻辑
+	 */
+	@Override
+	public Object run() {
+		RequestContext ctx = RequestContext.getCurrentContext();
+		HttpServletRequest request = ctx.getRequest();
+		System.out.println(request.getMethod() + &quot;--&quot; + request.getRequestURL().toString());
+		Object username = request.getParameter(&quot;username&quot;);
+		if (username != null &amp;&amp; &quot;fymod&quot;.equals(username.toString())) {
+			ctx.setSendZuulResponse(false);
+			try {
+				ctx.getResponse().setContentType(&quot;text/html;charset=utf-8&quot;);
+				ctx.getResponse().getWriter().write(&quot;监控到用户名是fymod&quot;);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		return null;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br></div></div><p>访问http://localhost:9073/api-client2/1234?username=fymod ，会发现返回过滤器中配置的数据。去掉username或者换成其他参数，就会正常走到对应的微服务中。</p> <h2 id="文件上传"><a href="#文件上传" aria-hidden="true" class="header-anchor">#</a> 文件上传</h2> <p>文件上传功能对应的官方文档地址可点击<a href="https://cloud.spring.io/spring-cloud-static/spring-cloud-netflix/2.0.1.RELEASE/single/spring-cloud-netflix.html#_uploading_files_through_zuul" target="_blank" rel="noopener noreferrer">这里<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。</p> <p>先实现代码逻辑，在client1中controller类里面写上如下代码</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>	@PostMapping(value=&quot;/upload&quot;)
+	public String handleFileUpload(@RequestParam(value=&quot;file&quot;, required=true) MultipartFile file) throws IOException {
+		byte[] bytes = file.getBytes();
+		File fileToSave = new File(file.getOriginalFilename());
+		FileCopyUtils.copy(bytes, fileToSave);
+		return fileToSave.getAbsolutePath();
+	}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>此时已经可以实现调用微服务实现文件上传功能了，但是要通过zuul，目前只能实现小文件上传，对于较大文件和特大文件会抛出异常，所以需要在client1的application.yml文件中添加配置项spring.servlet.multipart.max-file-size(默认1M)和spring.servlet.multipart.max-request-size(默认10M)。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9071
+spring:
+  application:
+    name: zuul-client1
+  servlet:
+    multipart:
+      max-file-size: 2000Mb
+      max-request-size: 2500Mb
+eureka: 
+  client:
+    service-url:
+      defaultZone: http://localhost:9070/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>接下来的问题是zuul调用client1中文件上传方法的时候，文件较大会报错，地址中需要加上前缀/zuul，另外如果文件很大，和client1连接也会超时，所以需要在zuul的application.yml中添加连接超时的配置，就和官方文档给出的代码一样：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>完成以上步骤后，使用终端实现POST调用，会返回上传文件的完整路径。注意地址是localhost:9073/zuul/api-client1/upload，而不是localhost:9073/api-client1/upload。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>curl -v -H &quot;Transfer-Encoding:chunked&quot; -F &quot;file=@大文件的路径&quot; localhost:9073/zuul/api-client1/upload
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/press/2019-6-29-spingcloud-basic-005/" class="prev">
+          Hystrix容错处理
+        </a></span> <span class="next"><a href="/press/2019-6-29-spingcloud-basic-007/">
+          Config配置管理
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"><!----><!----><div></div></div></div>
+    <script src="/assets/js/app.75d9b984.js" defer></script><script src="/assets/js/2.118380fc.js" defer></script><script src="/assets/js/17.34450871.js" defer></script><script src="/assets/js/3.411ea822.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Hystrix容错处理 | 青学知识库</title>
+    <meta name="description" content="Sping Cloud知识体系，从简单入手，讲解重点知识方便新手的顺序入门-Hystrix容错处理">
+    
+    
+    <link rel="preload" href="/assets/css/0.styles.e9ed429c.css" as="style"><link rel="preload" href="/assets/js/app.75d9b984.js" as="script"><link rel="preload" href="/assets/js/2.118380fc.js" as="script"><link rel="preload" href="/assets/js/16.1e05176e.js" as="script"><link rel="preload" href="/assets/js/3.411ea822.js" as="script"><link rel="prefetch" href="/assets/js/10.903586d7.js"><link rel="prefetch" href="/assets/js/11.10b2d3ce.js"><link rel="prefetch" href="/assets/js/12.6e5bbcc7.js"><link rel="prefetch" href="/assets/js/13.982ce1d0.js"><link rel="prefetch" href="/assets/js/14.2b21f1cb.js"><link rel="prefetch" href="/assets/js/15.dbd5cef3.js"><link rel="prefetch" href="/assets/js/17.34450871.js"><link rel="prefetch" href="/assets/js/18.21301368.js"><link rel="prefetch" href="/assets/js/19.a671d3e7.js"><link rel="prefetch" href="/assets/js/20.54811258.js"><link rel="prefetch" href="/assets/js/21.a65c2c46.js"><link rel="prefetch" href="/assets/js/22.f32633f4.js"><link rel="prefetch" href="/assets/js/23.6195881a.js"><link rel="prefetch" href="/assets/js/4.d9ccf79e.js"><link rel="prefetch" href="/assets/js/5.5e2eacdf.js"><link rel="prefetch" href="/assets/js/6.6c4229a0.js"><link rel="prefetch" href="/assets/js/7.4408bccc.js"><link rel="prefetch" href="/assets/js/8.2119c672.js"><link rel="prefetch" href="/assets/js/9.72fa30ee.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.e9ed429c.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">青学知识库</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">主页</a></div><div class="nav-item"><a href="/guide/" class="nav-link">导航</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">Spring Cloud</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-6-29-spingcloud/" class="nav-link">基础开发</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">运维管理</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/press/2019-8-4-gitlab/" class="nav-link">自动化部署</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title">了解更多</span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/about/" class="nav-link">网站信息</a></li><li class="dropdown-item"><!----> <a href="/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><!----> <a href="https://gitter.im/qingxueline/Lobby" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  交流大厅
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>基础开发</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/press/2019-6-29-spingcloud-basic-001/" class="sidebar-link">SpringCloud 开篇</a></li><li><a href="/press/2019-6-29-spingcloud-basic-002/" class="sidebar-link">微服务注册与发现</a></li><li><a href="/press/2019-6-29-spingcloud-basic-003/" class="sidebar-link">Ribbon客户端负载均衡</a></li><li><a href="/press/2019-6-29-spingcloud-basic-004/" class="sidebar-link">Feign声明式REST调用</a></li><li><a href="/press/2019-6-29-spingcloud-basic-005/" class="active sidebar-link">Hystrix容错处理</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#概念" class="sidebar-link">概念</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#ribbon使用hystrix" class="sidebar-link">Ribbon使用Hystrix</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#feign使用hystrix" class="sidebar-link">Feign使用Hystrix</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#hystrix监控" class="sidebar-link">Hystrix监控</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#ribbon使用dashboard" class="sidebar-link">Ribbon使用Dashboard</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#feign使用dashboard" class="sidebar-link">Feign使用Dashboard</a></li><li class="sidebar-sub-header"><a href="/press/2019-6-29-spingcloud-basic-005/#turbine" class="sidebar-link">Turbine</a></li></ul></li><li><a href="/press/2019-6-29-spingcloud-basic-006/" class="sidebar-link">Zuul构建微服务网关</a></li><li><a href="/press/2019-6-29-spingcloud-basic-007/" class="sidebar-link">Config配置管理</a></li><li><a href="/press/2019-6-29-spingcloud-basic-008/" class="sidebar-link">Sleuth链路追踪</a></li><li><a href="/press/2019-6-29-spingcloud-basic-009/" class="sidebar-link">使用Docker部署项目</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="概念"><a href="#概念" aria-hidden="true" class="header-anchor">#</a> 概念</h2> <p>在微服务架构中，根据业务来拆分成一个个的服务，为了保证其高可用，单个服务通常会集群部署。由于网络原因或者自身的原因，服务并不能保证100%可用，甚至会有服务瘫痪情况。服务与服务之间的依赖性，故障会传播，会对整个微服务系统造成灾难性的严重后果，这就是服务故障的“雪崩”效应。为了解决这个问题，业界提出了断路器模型。</p> <p>在微服务架构中，一个请求需要调用多个服务是非常常见的：
+<img src="https://box.kancloud.cn/94355fe06075860e1cdb6856d8da3f1e_600x393.png" alt="img"></p> <p>较底层的服务如果出现故障，会导致连锁故障。当对特定的服务的调用的不可用达到一个阀值（Hystrix 是5秒20次） 断路器将会被打开。
+<img src="https://box.kancloud.cn/ae4af12cdf46f70bb46db9e6219ffaf5_600x393.png" alt="img"></p> <p>Netflix开源了Hystrix组件，实现了断路器模式，SpringCloud对这一组件进行了整合。</p> <h2 id="ribbon使用hystrix"><a href="#ribbon使用hystrix" aria-hidden="true" class="header-anchor">#</a> Ribbon使用Hystrix</h2> <p>测试项目一共有三个，一个Eureka Server，一个Eureka Client用来提供接口调用，一个集成了Ribbon和Hystrix的项目用来调用Eureka Client。同时在正常调用后停止Eurek Client查看是否如逾期处理。</p> <p>新建一个普通的Eureka Server，分别配置application.yml、pom.xml和添加注解@EnableEurekaServer</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+server:
+  port: 9040
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9040/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>以上步骤完成后，直接启动即可，然后浏览器地址栏输入http://localhost:9040/eureka 查看界面。</p> <p>新建一个Eureka Client，分别配置application.yml、pom.xml和添加注解@EnableDiscoveryClient，然后提供对外调用接口的Java类。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9041
+spring:
+  application:
+    name: hystrix-ribbon-client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9040/eureka/
+  instance:
+    prefer-ip-address: true
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+
+	@GetMapping(&quot;/{id}&quot;)
+	public String getMessage(@PathVariable Long id) {
+		return &quot;the request id is &quot; + id;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><p>接下来新建一个整合了Ribbon和Hystrix的项目，pom文件依赖为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>application.yml的配置为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9042
+spring:
+  application:
+    name: hystrix-ribbon-web
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9040/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>和之前的一致，项目启动类添加注解@EnableDiscoveryClient 和 @EnableHystrix ， 同时加入Bean</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>	@Bean
+    @LoadBalanced
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>最后写一个Controller来调用Eureka Client中的方法。注解@HystrixCommand 中的 fallbackMethod 指定在出现错误的时候替代的返回值。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@RestController
+public class WebController {
+
+	@Autowired private RestTemplate restTemplate;
+
+	@HystrixCommand(fallbackMethod = &quot;testError&quot;)
+	@GetMapping(&quot;/test&quot;)
+    public String test() {
+        String result = restTemplate.getForObject(&quot;http://hystrix-ribbon-client/123&quot;,String.class);
+        System.out.println(result);
+        return result;
+    }
+	
+	public String testError() {
+		return &quot;出错之后会返回这里&quot;;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><p>以上完成后，依次启动server、client、web，然后访问http://localhost:9042/test  ，返回值为client中正常数据；然后停止client，再次请求相同地址，会返回来配置的错误方法返回值。因为Eureka  Server注册进入有心跳周期，部分情况下需要等待数秒钟。</p> <h2 id="feign使用hystrix"><a href="#feign使用hystrix" aria-hidden="true" class="header-anchor">#</a> Feign使用Hystrix</h2> <p>测试项目一共有三个，一个Eureka Server，一个Eureka Client用来提供接口调用，一个集成了Feign和Hystrix的项目用来调用Eureka Client。同时在正常调用后停止Eurek Client查看是否如逾期处理。</p> <p>新建一个普通的Eureka Server，分别配置application.yml、pom.xml和添加注解@EnableEurekaServer</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+server:
+  port: 9050
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9050/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>以上步骤完成后，直接启动即可，然后浏览器地址栏输入http://localhost:9050/eureka 查看界面。</p> <p>新建一个Eureka Client，分别配置application.yml、pom.xml和添加注解@EnableDiscoveryClient，然后提供对外调用接口的Java类。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9051
+spring:
+  application:
+    name: hystrix-feign-client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9050/eureka/
+  instance:
+    prefer-ip-address: true
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+
+	@GetMapping(&quot;/{id}&quot;)
+	public String getMessage(@PathVariable Long id) {
+		return &quot;the request id is &quot; + id;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><p>接下来新建一个整合了Feign和Hystrix的项目，pom文件依赖为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><p>application.yml的配置中需要指定feign.hystrix.enabled:true</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9052
+spring:
+  application:
+    name: hystrix-feign-web
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9050/eureka/
+  instance:
+    prefer-ip-address: true
+feign: 
+  hystrix: 
+    enabled: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>和之前的一致，项目启动类添加注解@EnableDiscoveryClient @EnableFeignClients 和 @EnableHystrix，然后定义一个接口，注解@FeignClient中的fallback来指定一个实现接口的类。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@FeignClient(value=&quot;hystrix-feign-client&quot;, fallback=TestCallBack.class)
+public interface IMyFeignClient {
+
+	@RequestMapping(value = &quot;/{id}&quot;,method = RequestMethod.GET)
+	public String test(@PathVariable(&quot;id&quot;) Long id);
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>TestCallBack类的代码为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.stereotype.Component;
+
+@Component
+public class TestCallBack implements IMyFeignClient {
+
+	@Override
+	public String test(Long id) {
+		return &quot;错误信息显示&quot;;
+	}
+
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>最后写一个Controller来调用Eureka Client中的方法。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController {
+
+	@Autowired private IMyFeignClient myFeignClient;
+
+	@GetMapping(&quot;/test&quot;)
+    public String test() {
+        String result = myFeignClient.test(234L);
+        System.out.println(result);
+        return result;
+    }
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><p>以上完成后，依次启动server、client、web，然后访问http://localhost:9052/test  ，返回值为client中正常数据；然后停止client，再次请求相同地址，会返回来配置的错误方法返回值。因为Eureka  Server注册进入有心跳周期，部分情况下需要等待数秒钟。</p> <h2 id="hystrix监控"><a href="#hystrix监控" aria-hidden="true" class="header-anchor">#</a> Hystrix监控</h2> <p>本节用一组项目实现对于ribbon整合、feign整合、turbine的demo。</p> <p>测试项目一共有五个，一个Eureka Server，一个Eureka  Client用来提供接口调用，一个集成了Ribbon和DashBoard的项目用来调用Eureka  Client，一个集成了Feign和DashBoard的项目用来调用Eureka  Client，还有一个使用Turbine来实现多个微服务在同一个web中的查看。</p> <p>新建一个普通的Eureka Server，分别配置application.yml、pom.xml和添加注解@EnableEurekaServer</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+server:
+  port: 9060
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9060/eureka/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>以上步骤完成后，直接启动即可，然后浏览器地址栏输入http://localhost:9060/eureka 查看界面。</p> <p>新建一个Eureka Client，分别配置application.yml、pom.xml和添加注解@EnableDiscoveryClient，然后提供对外调用接口的Java类。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9061
+spring:
+  application:
+    name: dashboard-client
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9060/eureka/
+  instance:
+    prefer-ip-address: true
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+
+	@GetMapping(&quot;/{id}&quot;)
+	public String getMessage(@PathVariable Long id) {
+		return &quot;the request id is &quot; + id;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><h2 id="ribbon使用dashboard"><a href="#ribbon使用dashboard" aria-hidden="true" class="header-anchor">#</a> Ribbon使用Dashboard</h2> <p>pom.xml中添加依赖</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix-dashboard&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><p>application.yml文件配置为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9063
+spring:
+  application:
+    name: dashboard-ribbon
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9060/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>启动类Java添加注解@EnableDiscoveryClient @EnableHystrix @EnableHystrixDashboard，同时添加两个@Bean，分别对应Ribbon和hystrix访问路径</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableHystrix
+@EnableHystrixDashboard
+public class Springcloud5DashboardRibbonApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Springcloud5DashboardRibbonApplication.class, args);
+	}
+	
+	@Bean
+    @LoadBalanced
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+	
+	@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+	@Bean
+    public ServletRegistrationBean getServlet(){
+        HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(streamServlet);
+        registrationBean.setLoadOnStartup(1);
+        registrationBean.addUrlMappings(&quot;/actuator/hystrix.stream&quot;);
+        registrationBean.setName(&quot;HystrixMetricsStreamServlet&quot;);
+        return registrationBean;
+    }
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br></div></div><p>最后实现调用client方法的Controller</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@RestController
+public class DashBoardController {
+
+	@Autowired private RestTemplate restTemplate;
+
+	@HystrixCommand(fallbackMethod = &quot;testError&quot;)
+	@GetMapping(&quot;/test&quot;)
+    public String test() {
+        String result = restTemplate.getForObject(&quot;http://dashboard-client/123&quot;,String.class);
+        System.out.println(result);
+        return result;
+    }
+	
+	public String testError() {
+		return &quot;出错之后会返回这里&quot;;
+	}
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><p>启动项目，访问http://localhost:9063/hystrix , 打开的页面中输入地址 http://localhost:9063/actuator/hystrix.stream ，然后点击Monitor Stream，会跳转到监控页面。第一次进入可能没有数据，调用几次http://localhost:9063/test 后再刷新页面就有数据了。</p> <h2 id="feign使用dashboard"><a href="#feign使用dashboard" aria-hidden="true" class="header-anchor">#</a> Feign使用Dashboard</h2> <p>pom.xml中添加依赖</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-hystrix-dashboard&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p>application.yml文件配置为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>server:
+  port: 9064
+spring:
+  application:
+    name: dashboard-feign
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9060/eureka/
+  instance:
+    prefer-ip-address: true
+feign: 
+  hystrix: 
+    enabled: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>启动类Java添加注解@EnableDiscoveryClient @EnableFeignClients @EnableHystrix  @EnableHystrixDashboard @EnableCircuitBreaker，同时添加一个@Bean对应hystrix访问路径</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+
+import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+@EnableHystrix
+@EnableHystrixDashboard
+@EnableCircuitBreaker
+public class Springcloud5DashboardFeignApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Springcloud5DashboardFeignApplication.class, args);
+	}
+	
+	@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+	@Bean
+    public ServletRegistrationBean getServlet(){
+        HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(streamServlet);
+        registrationBean.setLoadOnStartup(1);
+        registrationBean.addUrlMappings(&quot;/actuator/hystrix.stream&quot;);
+        registrationBean.setName(&quot;HystrixMetricsStreamServlet&quot;);
+        return registrationBean;
+    }
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br></div></div><p>定义一个接口，通过注解@FeignClient的fallback来指定出现异常情况对应的类。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@FeignClient(value=&quot;dashboard-client&quot;, fallback=TestCallBack.class)
+public interface IMyFeignClient {
+
+	@RequestMapping(value = &quot;/{id}&quot;,method = RequestMethod.GET)
+	public String test(@PathVariable(&quot;id&quot;) Long id);
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>TestCallBack对应的代码为</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.stereotype.Component;
+
+@Component
+public class TestCallBack implements IMyFeignClient {
+
+	@Override
+	public String test(Long id) {
+		return &quot;错误信息显示&quot;;
+	}
+
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p>最后实现调用client方法的Controller</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController {
+
+	@Autowired private IMyFeignClient myFeignClient;
+
+	@GetMapping(&quot;/test&quot;)
+    public String test() {
+        String result = myFeignClient.test(234L);
+        System.out.println(result);
+        return result;
+    }
+	
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><p>启动项目，访问http://localhost:9064/hystrix , 打开的页面中输入地址 http://localhost:9064/actuator/hystrix.stream ，然后点击Monitor Stream，会跳转到监控页面。第一次进入可能没有数据，调用几次http://localhost:9064/test 后再刷新页面就有数据了。</p> <h2 id="turbine"><a href="#turbine" aria-hidden="true" class="header-anchor">#</a> Turbine</h2> <p>看单个的Hystrix Dashboard的数据并没有什么多大的价值，要想看整个系统的Hystrix Dashboard数据就需要用到Hystrix Turbine。Hystrix Turbine将每个服务Hystrix Dashboard数据进行了整合。</p> <p>新建一个项目，用来整合上面两个Dashboard。 pom.xml和application.yml分别为：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+		&lt;dependency&gt;
+			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+			&lt;artifactId&gt;spring-cloud-starter-netflix-turbine&lt;/artifactId&gt;
+		&lt;/dependency&gt;
+spring:
+  application:
+    name: turbine
+server:
+  port: 9065
+turbine:
+  aggregator:
+    clusterConfig: default
+  appConfig: dashboard-feign,dashboard-ribbon
+  clusterNameExpression: new String(&quot;default&quot;)
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9060/eureka/
+  instance:
+    prefer-ip-address: true
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p>对application.yml中部分参数进行下说明：</p> <ul><li>turbine.aggregator.clusterConfig:指定聚合哪些集群，多个使用&quot;,&quot;分割，默认为default。可使用http://.../turbine.stream?cluster={clusterConfig之一} 访问</li> <li>turbine.appConfig:配置Eureka中的serviceId列表，表明监控哪些服务</li> <li>turbine.clusterNameExpression有几种情形</li></ul> <ol><li>clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称</li> <li>当clusterNameExpression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default</li> <li>当clusterNameExpression:  metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster:  ABC，则需要配置，同时turbine.aggregator.clusterConfig: ABC</li></ol> <p>完成以上步骤后，需要在启动类中添加注解@EnableDiscoveryClient 和 @EnableTurbine，然后启动项目即可。</p> <p>浏览器地址栏依旧输入http://localhost:9063/hystrix  或者http://localhost:9064/hystrix ，这是ribbon和feign与hystrix  dashboard整合后访问的地址，然后在打开的页面输入栏中填入：http://localhost:9065/turbine.stream ，然后点击Monitor Stream，在已经分别调用过对应方法（ http://localhost:9063/testhttp://localhost:9064/test ）后，会有如下效果：
+<img src="https://box.kancloud.cn/6296409955fa131bad3d259d05c0c90c_1702x806.png" alt="img"></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/press/2019-6-29-spingcloud-basic-004/" class="prev">
+          Feign声明式REST调用
+        </a></span> <span class="next"><a href="/press/2019-6-29-spingcloud-basic-006/">
+          Zuul构建微服务网关
+        </a>
+        →
+      </span></p></div> </main></div><div class="global-ui"><!----><!----><div></div></div></div>
+    <script src="/assets/js/app.75d9b984.js" defer></script><script src="/assets/js/2.118380fc.js" defer></script><script src="/assets/js/16.1e05176e.js" defer></script><script src="/assets/js/3.411ea822.js" defer></script>
+  </body>
+</html>
